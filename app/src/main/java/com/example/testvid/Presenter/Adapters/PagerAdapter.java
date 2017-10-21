@@ -1,12 +1,12 @@
-package com.example.testvid.Adapters;
+package com.example.testvid.Presenter.Adapters;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
-import com.example.testvid.Fragments.FragmentFeautered;
-import com.example.testvid.Fragments.FragmentLogin;
-import com.example.testvid.Fragments.FragmentNew;
+import com.example.testvid.View.Fragments.FragmentFeautered;
+import com.example.testvid.View.Fragments.FragmentLogin;
+import com.example.testvid.View.Fragments.FragmentNew;
 
 
 public class PagerAdapter extends FragmentStatePagerAdapter {

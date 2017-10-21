@@ -1,19 +1,18 @@
-package com.example.testvid.Fragments;
+package com.example.testvid.View.Fragments;
 
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.testvid.R;
 
+public class FragmentFeed extends Fragment {
 
-public class FragmentFeautered extends Fragment {
 
-
-    public FragmentFeautered() {
+    public FragmentFeed() {
         // Required empty public constructor
     }
 
@@ -22,7 +21,7 @@ public class FragmentFeautered extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_feautered, container, false);
+        return inflater.inflate(R.layout.fragment_feed, container, false);
     }
 
 }

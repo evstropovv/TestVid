@@ -1,9 +1,8 @@
-package com.example.testvid.Fragments;
+package com.example.testvid.View.Fragments;
 
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +63,5 @@ public class FragmentLogin extends Fragment {
 
             }
         });
-
     }
 }

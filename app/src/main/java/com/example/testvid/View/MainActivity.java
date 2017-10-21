@@ -1,11 +1,12 @@
-package com.example.testvid;
+package com.example.testvid.View;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.testvid.Adapters.PagerAdapter;
+import com.example.testvid.Presenter.Adapters.PagerAdapter;
+import com.example.testvid.R;
 
 public class MainActivity extends AppCompatActivity {
 

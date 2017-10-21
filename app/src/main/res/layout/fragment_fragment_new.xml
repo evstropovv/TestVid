@@ -2,12 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.testvid.Fragments.FragmentNew">
+    tools:context=".View.Fragments.FragmentNew">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvNew"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="NEW" />
+        android:layout_height="match_parent" />
+
 
 </FrameLayout>
