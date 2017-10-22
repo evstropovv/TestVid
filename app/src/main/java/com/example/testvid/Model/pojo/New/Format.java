@@ -1,4 +1,4 @@
-package com.example.testvid.pojo.New;
+package com.example.testvid.Model.pojo.New;
 
 
 import com.google.gson.annotations.Expose;

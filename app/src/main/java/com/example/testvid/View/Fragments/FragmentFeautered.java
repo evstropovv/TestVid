@@ -2,6 +2,7 @@ package com.example.testvid.View.Fragments;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,33 +10,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.example.testvid.Presenter.Adapters.RVfeauteredAdapter;
-import com.example.testvid.Presenter.Adapters.RVnewAdapter;
+import com.example.testvid.Presenter.Adapters.RVvideoListAdapter;
 import com.example.testvid.Presenter.Interfaces.IPresenterFeautered;
 import com.example.testvid.Presenter.PresenterFeautered;
-import com.example.testvid.Presenter.PresenterNew;
 import com.example.testvid.R;
-import com.example.testvid.Retrofit.ApiModule;
 import com.example.testvid.View.Fragments.interfaces.IFragmentFeautered;
-import com.example.testvid.pojo.New.NewResponse;
-import com.example.testvid.pojo.New.Video;
+import com.example.testvid.View.MainActivity;
+import com.example.testvid.Model.pojo.New.Video;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class FragmentFeautered extends Fragment implements IFragmentFeautered{
     private RecyclerView recyclerView;
-    private RVfeauteredAdapter recyclerAdapter;
+    private RVvideoListAdapter recyclerAdapter;
     private IPresenterFeautered presenter;
 
-    private int visibleThreshold = 3;
+    private int visibleThreshold = 2;
     private Boolean isLoading = false;
     private int totalItemCount, lastVisibleItem;
 
@@ -45,10 +39,11 @@ public class FragmentFeautered extends Fragment implements IFragmentFeautered{
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_fragment_feautered, container, false);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.rvFeautered);
         final RecyclerView.LayoutManager recyclerLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(recyclerLayoutManager);
-        recyclerAdapter = new RVfeauteredAdapter(view.getContext());
+        recyclerAdapter = new RVvideoListAdapter(view.getContext());
         recyclerView.setAdapter(recyclerAdapter);
         presenter = new PresenterFeautered(this);
         presenter.getNewVideos(); //load videos
@@ -73,11 +68,20 @@ public class FragmentFeautered extends Fragment implements IFragmentFeautered{
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
 
     @Override
     public void showVideoList(List<Video> videos) {
         recyclerAdapter.setData(videos);
         isLoading = false;
+        try{
+            ((MainActivity)getActivity()).setVisibleProgressBar(false);
+        } catch (NullPointerException e){}
     }
 
     @Override

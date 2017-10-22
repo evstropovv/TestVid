@@ -12,24 +12,24 @@ import android.widget.TextView;
 
 import com.example.testvid.R;
 import com.example.testvid.View.VideoPlayer;
-import com.example.testvid.pojo.New.Video;
+import com.example.testvid.Model.pojo.New.Video;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class RVfeauteredAdapter extends RecyclerView.Adapter<RVfeauteredAdapter.ViewHolder> {
-    private List<Video>  videos;
+public class RVvideoListAdapter extends RecyclerView.Adapter<RVvideoListAdapter.ViewHolder> {
+    private List<Video> videos;
     private Context ctx;
 
-    public RVfeauteredAdapter(Context context){
+    public RVvideoListAdapter(Context context) {
         this.ctx = context;
         videos = new ArrayList<>();
     }
 
-    public void setData(List<Video> list){
-        if (list!=null && list.size()>0){
+    public void setData(List<Video> list) {
+        if (list != null && list.size() > 0) {
             this.videos.clear();
             this.videos.addAll(list);
             notifyDataSetChanged();
@@ -47,10 +47,11 @@ public class RVfeauteredAdapter extends RecyclerView.Adapter<RVfeauteredAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvName.setText(videos.get(position).getTitle());
-        holder.tvVotes.setText(videos.get(position).getLikesCount()+"");
-        try{
+        int likes = videos.get(position).getLikesCount();
+        holder.tvVotes.setText(likes == 1 ? likes + " like" : likes + " likes");
+        try {
             Picasso.with(ctx).load(videos.get(position).getThumbnailUrl()).into(holder.ivImage);
-        } catch (Error e){
+        } catch (Error e) {
             Log.d("Log.d", "error Picasso " + e.getMessage());
         }
     }
@@ -64,11 +65,12 @@ public class RVfeauteredAdapter extends RecyclerView.Adapter<RVfeauteredAdapter.
 
         public TextView tvName, tvVotes;
         public ImageView ivImage;
+
         public ViewHolder(View itemView) {
             super(itemView);
-            tvName = (TextView)itemView.findViewById(R.id.tvName);
-            ivImage = (ImageView)itemView.findViewById(R.id.ivPhoto);
-            tvVotes = (TextView)itemView.findViewById(R.id.tvVotes);
+            tvName = (TextView) itemView.findViewById(R.id.tvName);
+            ivImage = (ImageView) itemView.findViewById(R.id.ivPhoto);
+            tvVotes = (TextView) itemView.findViewById(R.id.tvVotes);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

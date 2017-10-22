@@ -1,4 +1,4 @@
-package com.example.testvid.pojo.auth;
+package com.example.testvid.Model.pojo.auth;
 
 
 

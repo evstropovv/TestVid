@@ -1,19 +1,15 @@
 package com.example.testvid.Retrofit;
 
-import com.example.testvid.pojo.New.NewResponse;
-import com.example.testvid.pojo.auth.AuthResponse;
-
-import java.util.HashMap;
+import com.example.testvid.Model.pojo.New.NewResponse;
+import com.example.testvid.Model.pojo.auth.AuthResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
 
 public interface ApiRetrofit {
 
@@ -26,7 +22,7 @@ public interface ApiRetrofit {
                         @Query("limit") int limit);
 
     @GET("/videos/feed")
-    Call<String> getFeed(@Query("offset") int offset,
+    Call<NewResponse> getFeed(@Query("offset") int offset,
                          @Query("limit") int limit,
                          @Query("token") String token);
 

@@ -2,14 +2,11 @@ package com.example.testvid.Presenter;
 
 
 import com.example.testvid.Model.Interfaces.IModelFeautered;
-import com.example.testvid.Model.Interfaces.IModelNew;
 import com.example.testvid.Model.ModelFeautered;
-import com.example.testvid.Model.ModelNew;
 import com.example.testvid.Presenter.Interfaces.IPresenterFeautered;
 import com.example.testvid.View.Fragments.interfaces.IFragmentFeautered;
-import com.example.testvid.View.Fragments.interfaces.IFragmentNew;
-import com.example.testvid.pojo.New.NewResponse;
-import com.example.testvid.pojo.New.Video;
+import com.example.testvid.Model.pojo.New.NewResponse;
+import com.example.testvid.Model.pojo.New.Video;
 
 import java.util.ArrayList;
 import java.util.List;

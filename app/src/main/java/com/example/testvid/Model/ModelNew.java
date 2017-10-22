@@ -3,7 +3,7 @@ package com.example.testvid.Model;
 
 import com.example.testvid.Model.Interfaces.IModelNew;
 import com.example.testvid.Retrofit.ApiModule;
-import com.example.testvid.pojo.New.NewResponse;
+import com.example.testvid.Model.pojo.New.NewResponse;
 
 import retrofit2.Call;
 

@@ -1,13 +1,11 @@
 package com.example.testvid.Presenter;
 
-import android.util.Log;
-
 import com.example.testvid.Model.Interfaces.IModelNew;
 import com.example.testvid.Model.ModelNew;
 import com.example.testvid.Presenter.Interfaces.IPresenterNew;
 import com.example.testvid.View.Fragments.interfaces.IFragmentNew;
-import com.example.testvid.pojo.New.NewResponse;
-import com.example.testvid.pojo.New.Video;
+import com.example.testvid.Model.pojo.New.NewResponse;
+import com.example.testvid.Model.pojo.New.Video;
 
 import java.util.ArrayList;
 import java.util.List;

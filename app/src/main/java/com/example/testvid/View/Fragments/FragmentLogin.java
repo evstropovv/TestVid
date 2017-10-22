@@ -2,27 +2,31 @@ package com.example.testvid.View.Fragments;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.testvid.Presenter.Interfaces.IPresenterLogin;
+import com.example.testvid.Presenter.PresenterLogin;
 import com.example.testvid.R;
-import com.example.testvid.Retrofit.ApiModule;
-import com.example.testvid.pojo.auth.AuthResponse;
+import com.example.testvid.Other.Variables;
+import com.example.testvid.View.Fragments.interfaces.IFragmentLogin;
+import com.example.testvid.View.MainActivity;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class FragmentLogin extends Fragment {
+public class FragmentLogin extends Fragment implements IFragmentLogin{
 
-    EditText etUsername, etPassword;
-    Button btnLogin;
-
+    private EditText etUsername, etPassword;
+    private Button btnLogin;
+    private ProgressBar loginProgressBar;
+    private IPresenterLogin presenter;
     public FragmentLogin() {
     }
 
@@ -34,34 +38,39 @@ public class FragmentLogin extends Fragment {
         View view = inflater.inflate(R.layout.fragment_fragment_login, container, false);
         etUsername = (EditText) view.findViewById(R.id.etUsername);
         etPassword = (EditText) view.findViewById(R.id.etPassword);
-        btnLogin = (Button) view.findViewById(R.id.btnLogin);
+        loginProgressBar = (ProgressBar)view.findViewById(R.id.progressLogin);
+        presenter = new PresenterLogin(this);
 
+        btnLogin = (Button) view.findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!(etUsername.getText().toString().matches("")) || (etPassword.getText().toString().matches(""))) {
-                    login(etUsername.getText().toString(), etPassword.getText().toString());
+                if (!(etUsername.getText().toString().matches("")) && !(etPassword.getText().toString().matches(""))) {
+                    loginProgressBar.setVisibility(View.VISIBLE);
+                    presenter.login(etUsername.getText().toString(), etPassword.getText().toString());
                 } else {
                     Toast.makeText(getActivity(), "Login or Password is null", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
         return view;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
 
-    private void login(String name, String password) {
-        Call<AuthResponse> test = ApiModule.getClient().login(name, password);
 
-        test.enqueue(new Callback<AuthResponse>() {
-            @Override
-            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
-                Toast.makeText(getActivity(), response.body().getUser().getEmail() + " login succesfully", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(Call<AuthResponse> call, Throwable t) {
-
-            }
-        });
+    @Override
+    public void loginResult(Boolean result) {
+        loginProgressBar.setVisibility(View.GONE);
+        if (result) {
+            Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_LONG).show();
+            Variables.isLogin=result;
+            ((MainActivity)getActivity()).refreshPagerAdapter();
+        }
     }
 }
