@@ -49,7 +49,7 @@ public class FragmentLogin extends Fragment implements IFragmentLogin{
                     loginProgressBar.setVisibility(View.VISIBLE);
                     presenter.login(etUsername.getText().toString(), etPassword.getText().toString());
                 } else {
-                    Toast.makeText(getActivity(), "Login or Password is null", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.login_password_empty), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -67,10 +67,15 @@ public class FragmentLogin extends Fragment implements IFragmentLogin{
     @Override
     public void loginResult(Boolean result) {
         loginProgressBar.setVisibility(View.GONE);
+        Toast.makeText(getActivity(), getResources().getString(R.string.login_password_empty), Toast.LENGTH_SHORT).show();
         if (result) {
-            Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_LONG).show();
-            Variables.isLogin=result;
+            Toast.makeText(getActivity(), getResources().getString(R.string.login_success), Toast.LENGTH_LONG).show();
             ((MainActivity)getActivity()).refreshPagerAdapter();
         }
+    }
+
+    @Override
+    public void loginError(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
 }

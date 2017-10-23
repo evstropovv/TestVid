@@ -10,12 +10,25 @@ public class AuthResponse {
     @SerializedName("status")
     @Expose
     private Boolean status;
+
+    @SerializedName("code")
+    @Expose
+    private String code;
+
+    @SerializedName("error")
+    @Expose
+    private String error;
+
     @SerializedName("auth")
     @Expose
     private Auth auth;
+
     @SerializedName("user")
     @Expose
     private User user;
+
+    public String getCode(){ return code;}
+    public String getError(){ return error;}
 
     public Boolean getStatus() {
         return status;

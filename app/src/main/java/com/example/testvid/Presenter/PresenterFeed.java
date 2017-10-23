@@ -48,4 +48,11 @@ public class PresenterFeed implements IPresenterFeed {
             }
         });
     }
+
+    @Override
+    public void refresh() {
+        offset = 0;
+        videos.clear();
+        getNewVideos();
+    }
 }

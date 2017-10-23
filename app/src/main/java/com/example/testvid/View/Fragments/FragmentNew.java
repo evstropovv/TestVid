@@ -4,6 +4,7 @@ package com.example.testvid.View.Fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,8 +29,8 @@ public class FragmentNew extends Fragment implements IFragmentNew {
     private RecyclerView recyclerView;
     private RVvideoListAdapter recyclerAdapter;
     private IPresenterNew presenter;
-
-    private int visibleThreshold = 2;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private int visibleThreshold = 5;
     private Boolean isLoading = false;
     private int totalItemCount, lastVisibleItem;
 
@@ -41,6 +42,7 @@ public class FragmentNew extends Fragment implements IFragmentNew {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragment_new, container, false);
+        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swiperefresh);
         recyclerView = (RecyclerView) view.findViewById(R.id.rvNew);
         final RecyclerView.LayoutManager recyclerLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(recyclerLayoutManager);
@@ -49,7 +51,16 @@ public class FragmentNew extends Fragment implements IFragmentNew {
 
         presenter = new PresenterNew(this);
         presenter.getNewVideos(); //load videos
-
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        recyclerAdapter = new RVvideoListAdapter(getActivity());
+                        recyclerView.setAdapter(recyclerAdapter);
+                        presenter.refresh();
+                    }
+                }
+        );
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView,
@@ -77,6 +88,7 @@ public class FragmentNew extends Fragment implements IFragmentNew {
 
     @Override
     public void showVideoList(List<Video> videos) {
+        swipeRefreshLayout.setRefreshing(false);
         recyclerAdapter.setData(videos);
         isLoading = false;
         try{((MainActivity)getActivity()).setVisibleProgressBar(false);

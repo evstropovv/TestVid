@@ -45,4 +45,10 @@ public class PresenterNew implements IPresenterNew {
             }
         });
     }
+    @Override
+    public void refresh() {
+        offset = 0;
+        videos.clear();
+        getNewVideos();
+    }
 }

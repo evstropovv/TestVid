@@ -2,6 +2,7 @@ package com.example.testvid.Presenter.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,15 +14,33 @@ import android.widget.TextView;
 import com.example.testvid.R;
 import com.example.testvid.View.VideoPlayer;
 import com.example.testvid.Model.pojo.New.Video;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.hls.DefaultHlsDataSourceFactory;
+import com.google.android.exoplayer2.source.hls.HlsDataSourceFactory;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class RVvideoListAdapter extends RecyclerView.Adapter<RVvideoListAdapter.ViewHolder> {
+public class RVvideoListAdapter extends RecyclerView.Adapter<RVvideoListAdapter.ViewHolder>{
     private List<Video> videos;
     private Context ctx;
+    private SimpleExoPlayer player;
+    private int visiblePosition;
 
     public RVvideoListAdapter(Context context) {
         this.ctx = context;
@@ -61,16 +80,20 @@ public class RVvideoListAdapter extends RecyclerView.Adapter<RVvideoListAdapter.
         return videos.size();
     }
 
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView tvName, tvVotes;
         public ImageView ivImage;
+        public SimpleExoPlayerView videoView;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvName = (TextView) itemView.findViewById(R.id.tvName);
             ivImage = (ImageView) itemView.findViewById(R.id.ivPhoto);
             tvVotes = (TextView) itemView.findViewById(R.id.tvVotes);
+            videoView = (SimpleExoPlayerView) itemView.findViewById(R.id.videoView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -79,6 +102,7 @@ public class RVvideoListAdapter extends RecyclerView.Adapter<RVvideoListAdapter.
                     ctx.startActivity(intent);
                 }
             });
+
         }
     }
 }

@@ -23,6 +23,7 @@ public class PresenterFeautered implements IPresenterFeautered {
 
     int limit = 10;
     int offset = 0;
+
     public PresenterFeautered(IFragmentFeautered fragment) {
         this.fragment = fragment;
         model = new ModelFeautered();
@@ -44,6 +45,12 @@ public class PresenterFeautered implements IPresenterFeautered {
                 fragment.showError(t.getMessage());
             }
         });
+    }
 
+    @Override
+    public void refresh() {
+        offset = 0;
+        videos.clear();
+        getNewVideos();
     }
 }

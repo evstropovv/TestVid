@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">TestVid</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="login">Login</string>
     <string name="username">Name</string>
     <string name="password">Password</string>
+    <string name="login_success">Login successful</string>
+    <string name="login_password_empty">Login or password is empty</string>
+    <string name="something_wrong">Something went wrong</string>
+
 </resources>
