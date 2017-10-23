@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.testvid.Other.Variables;
 import com.example.testvid.R;
 import com.example.testvid.View.VideoPlayer;
 import com.example.testvid.Model.pojo.New.Video;
@@ -39,8 +40,6 @@ import java.util.List;
 public class RVvideoListAdapter extends RecyclerView.Adapter<RVvideoListAdapter.ViewHolder>{
     private List<Video> videos;
     private Context ctx;
-    private SimpleExoPlayer player;
-    private int visiblePosition;
 
     public RVvideoListAdapter(Context context) {
         this.ctx = context;
@@ -67,7 +66,9 @@ public class RVvideoListAdapter extends RecyclerView.Adapter<RVvideoListAdapter.
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvName.setText(videos.get(position).getTitle());
         int likes = videos.get(position).getLikesCount();
-        holder.tvVotes.setText(likes == 1 ? likes + " like" : likes + " likes");
+        holder.tvVotes.setText(likes == 1 ? likes +
+                ctx.getResources().getString(R.string.like) : likes +
+                ctx.getResources().getString(R.string.likes) );
         try {
             Picasso.with(ctx).load(videos.get(position).getThumbnailUrl()).into(holder.ivImage);
         } catch (Error e) {
@@ -98,7 +99,7 @@ public class RVvideoListAdapter extends RecyclerView.Adapter<RVvideoListAdapter.
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ctx, VideoPlayer.class);
-                    intent.putExtra("url", videos.get(getAdapterPosition()).getCompleteUrl());
+                    intent.putExtra(Variables.URL, videos.get(getAdapterPosition()).getCompleteUrl());
                     ctx.startActivity(intent);
                 }
             });

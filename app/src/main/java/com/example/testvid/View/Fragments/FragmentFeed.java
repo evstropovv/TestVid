@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.ImageView;
-import android.widget.VideoView;
 
 import com.example.testvid.Presenter.Adapters.RVvideoListAdapter;
 import com.example.testvid.Presenter.Interfaces.IPresenterFeed;
@@ -44,7 +42,7 @@ import com.google.android.exoplayer2.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentFeed extends Fragment implements IFragmentFeed{
+public class FragmentFeed extends Fragment implements IFragmentFeed {
     private RecyclerView recyclerView;
     private RVvideoListAdapter recyclerAdapter;
     private IPresenterFeed presenter;
@@ -55,9 +53,16 @@ public class FragmentFeed extends Fragment implements IFragmentFeed{
     private List<Video> videos;
     private View currentFocusedLayout, oldFocusedLayout;
     private SimpleExoPlayer player;
+    private int lastPositionView;
 
     public FragmentFeed() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isVisibleToUser) player.stop();
     }
 
 
@@ -90,48 +95,50 @@ public class FragmentFeed extends Fragment implements IFragmentFeed{
                     }
                 }
         );
-
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     //get the recyclerview position which is completely visible and first
-                    int positionView = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-                    Log.d("VISISBLE POSITION", positionView + "");
-                    currentFocusedLayout = ((LinearLayoutManager) recyclerView.getLayoutManager()).findViewByPosition(positionView);
-                    SimpleExoPlayerView videoViewCurrent = (SimpleExoPlayerView) currentFocusedLayout.findViewById(R.id.videoView);
-                    ImageView imageView = (ImageView)currentFocusedLayout.findViewById(R.id.ivPhoto);
-                    videoViewCurrent.setPlayer(player);
+                    int positionView = ((LinearLayoutManager) recyclerLayoutManager).findFirstCompletelyVisibleItemPosition();
+                    if (positionView != lastPositionView) {
+                        lastPositionView = positionView;
+                        Log.d("VISISBLE POSITION", positionView + "");
+                        currentFocusedLayout = ((LinearLayoutManager) recyclerLayoutManager).findViewByPosition(positionView);
+                        if (currentFocusedLayout != null) {
+                            SimpleExoPlayerView videoViewCurrent = (SimpleExoPlayerView) currentFocusedLayout.findViewById(R.id.videoView);
+                            ImageView imageView = (ImageView) currentFocusedLayout.findViewById(R.id.ivPhoto);
+                            videoViewCurrent.setPlayer(player);
 
-                    if (positionView >= 0) {
-                        if (oldFocusedLayout != null) {
-                            //Stop the previous video playback after new scroll
-                            ImageView imageViewOld = (ImageView)oldFocusedLayout.findViewById(R.id.ivPhoto);
-                            SimpleExoPlayerView videoViewOld = (SimpleExoPlayerView) oldFocusedLayout.findViewById(R.id.videoView);
-                            videoViewOld.setVisibility(View.INVISIBLE);
-                            imageViewOld.setVisibility(View.VISIBLE);
-                            player.stop();
+                            if (positionView >= 0) {
+                                if (oldFocusedLayout != null) {
+                                    //Stop the previous video playback after new scroll
+                                    ImageView imageViewOld = (ImageView) oldFocusedLayout.findViewById(R.id.ivPhoto);
+                                    SimpleExoPlayerView videoViewOld = (SimpleExoPlayerView) oldFocusedLayout.findViewById(R.id.videoView);
+                                    videoViewOld.setVisibility(View.INVISIBLE);
+                                    imageViewOld.setVisibility(View.VISIBLE);
+                                    player.stop();
+                                }
+
+                                DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getActivity(), Util.getUserAgent(getActivity(), "Vidme"));
+                                HlsDataSourceFactory hlsDataSourceFactory = new DefaultHlsDataSourceFactory(dataSourceFactory);
+
+
+                                MediaSource videoSource = new HlsMediaSource(Uri.parse(videos.get(positionView).getCompleteUrl()),
+                                        hlsDataSourceFactory, 1, null, null);
+
+                                //to play video of selected recylerview;
+                                videoViewCurrent.setVisibility(View.VISIBLE);
+                                player.prepare(videoSource);
+                                player.setPlayWhenReady(true);
+                                imageView.setVisibility(View.INVISIBLE);
+                                oldFocusedLayout = currentFocusedLayout;
+                            }
                         }
-
-                        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getActivity(), Util.getUserAgent(getActivity(), "Vidme"));
-                        HlsDataSourceFactory hlsDataSourceFactory = new DefaultHlsDataSourceFactory(dataSourceFactory);
-
-                        MediaSource videoSource = new HlsMediaSource(Uri.parse(videos.get(positionView).getCompleteUrl()),
-                                hlsDataSourceFactory, 1, null, null);
-                        Log.d("Log.d", "position= " + positionView + " URL= " + videos.get(positionView).getCompleteUrl());
-
-                        //to play video of selected recylerview;
-                        videoViewCurrent.setVisibility(View.VISIBLE);
-                        player.prepare(videoSource);
-                        player.setPlayWhenReady(true);
-                        imageView.setVisibility(View.INVISIBLE);
-                        oldFocusedLayout = currentFocusedLayout;
                     }
                 }
-
             }
 
             @Override
@@ -157,7 +164,6 @@ public class FragmentFeed extends Fragment implements IFragmentFeed{
         player.stop();
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -182,4 +188,5 @@ public class FragmentFeed extends Fragment implements IFragmentFeed{
     public void showError(String msg) {
 
     }
+
 }

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.testvid.Other.Variables;
 import com.example.testvid.R;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -37,7 +38,7 @@ public class VideoPlayer extends AppCompatActivity {
         setContentView(R.layout.activity_video_player);
         videoView = (SimpleExoPlayerView) findViewById(R.id.videoView);
         Intent intent = getIntent();
-        path = intent.getStringExtra("url");
+        path = intent.getStringExtra(Variables.URL);
         playVideo();
     }
 

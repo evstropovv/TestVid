@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkConnection() {
         if (!InternetCheck.isConnected(this))
-            Toast.makeText(this, "No internet connection :(", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
     }
 
     private void setUI() {
@@ -56,16 +56,16 @@ public class MainActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Feautured"));
-        tabLayout.addTab(tabLayout.newTab().setText("New"));
-        tabLayout.addTab(tabLayout.newTab().setText("Feed"));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.feautured));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.$new));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.feed));
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         tabAdapter = new PagerAdapter(getFragmentManager(), tabLayout.getTabCount());
 
         viewPager.setAdapter(tabAdapter);
+        viewPager.setOffscreenPageLimit(0);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+
             }
 
             @Override
@@ -106,6 +107,4 @@ public class MainActivity extends AppCompatActivity {
     public void setVisibleProgressBar(Boolean visible) {
         progressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
-
-
 }

@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.example.testvid.Presenter.Interfaces.IPresenterLogin;
 import com.example.testvid.Presenter.PresenterLogin;
 import com.example.testvid.R;
-import com.example.testvid.Other.Variables;
 import com.example.testvid.View.Fragments.interfaces.IFragmentLogin;
 import com.example.testvid.View.MainActivity;
 
@@ -29,6 +28,8 @@ public class FragmentLogin extends Fragment implements IFragmentLogin{
     private IPresenterLogin presenter;
     public FragmentLogin() {
     }
+
+
 
 
     @Override
@@ -78,4 +79,5 @@ public class FragmentLogin extends Fragment implements IFragmentLogin{
     public void loginError(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
+
 }

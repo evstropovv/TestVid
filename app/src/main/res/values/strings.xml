@@ -7,5 +7,12 @@
     <string name="login_success">Login successful</string>
     <string name="login_password_empty">Login or password is empty</string>
     <string name="something_wrong">Something went wrong</string>
+    <string name="like"> like</string>
+    <string name="likes"> likes</string>
+    <string name="no_internet"> No internet connection :(</string>
+
+    <string name="feautured"> Feautured</string>
+    <string name="$new"> New</string>
+    <string name="feed"> Feed</string>
 
 </resources>
